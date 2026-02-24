@@ -1,3 +1,4 @@
+.ddev
 assets/*
 !assets/.gitignore
 protected/runtime/*
