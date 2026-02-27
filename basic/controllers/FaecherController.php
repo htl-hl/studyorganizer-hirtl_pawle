@@ -1,6 +1,6 @@
 <?php
 
-namespace app\Controllers;
+namespace app\controllers;
 
 use app\models\Faecher;
 use app\models\FaecherSearch;
