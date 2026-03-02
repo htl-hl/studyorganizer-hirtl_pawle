@@ -1,0 +1,274 @@
+name: ddev-studyorganizer
+networks:
+    ddev_default:
+        external: true
+        name: ddev_default
+    default:
+        labels:
+            com.ddev.platform: ddev
+        name: ddev-studyorganizer_default
+services:
+    db:
+        build:
+            args:
+                BASE_IMAGE: ddev/ddev-dbserver-mysql-8.4:v1.24.7
+                gid: "1000"
+                uid: "1000"
+                username: test
+            context: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/.dbimageBuild
+            dockerfile: Dockerfile
+        cap_add:
+            - SYS_NICE
+        command: []
+        container_name: ddev-studyorganizer-db
+        environment:
+            BITNAMI_VOLUME_DIR: /bitnami/mysql
+            COLUMNS: "118"
+            DDEV_DATABASE: mysql:8.4
+            DDEV_DATABASE_FAMILY: mysql
+            DDEV_GID: "1000"
+            DDEV_GOARCH: amd64
+            DDEV_GOOS: linux
+            DDEV_HOSTNAME: studyorganizer.ddev.site
+            DDEV_PHP_VERSION: "8.4"
+            DDEV_PRIMARY_URL: https://studyorganizer.ddev.site
+            DDEV_PRIMARY_URL_PORT: "443"
+            DDEV_PRIMARY_URL_WITHOUT_PORT: https://studyorganizer.ddev.site
+            DDEV_PROJECT: studyorganizer
+            DDEV_PROJECT_TYPE: php
+            DDEV_ROUTER_HTTP_PORT: "80"
+            DDEV_ROUTER_HTTPS_PORT: "443"
+            DDEV_SCHEME: https
+            DDEV_SITENAME: studyorganizer
+            DDEV_TLD: ddev.site
+            DDEV_UID: "1000"
+            DDEV_USER: test
+            DDEV_VERSION: v1.24.7
+            DOCKER_IP: 127.0.0.1
+            HOST_DOCKER_INTERNAL_IP: 172.20.240.1
+            IS_DDEV_PROJECT: "true"
+            LINES: "39"
+            MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/studyorganizer-db/mysql_history
+            PGDATABASE: db
+            PGHOST: 127.0.0.1
+            PGPASSWORD: db
+            PGUSER: db
+            POSTGRES_DB: db
+            POSTGRES_PASSWORD: db
+            POSTGRES_USER: db
+            TZ: Europe/Berlin
+            USER: test
+        healthcheck:
+            interval: 1s
+            retries: 70
+            start_interval: 1s
+            start_period: 2m0s
+            timeout: 1m10s
+        hostname: studyorganizer-db
+        image: ddev/ddev-dbserver-mysql-8.4:v1.24.7-studyorganizer-built
+        labels:
+            com.ddev.app-type: php
+            com.ddev.approot: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+            com.ddev.platform: ddev
+            com.ddev.site-name: studyorganizer
+        networks:
+            ddev_default: null
+            default: null
+        ports:
+            - host_ip: 127.0.0.1
+              mode: ingress
+              protocol: tcp
+              target: 3306
+        restart: "no"
+        stop_grace_period: 1m0s
+        user: 1000:1000
+        volumes:
+            - source: database
+              target: /var/lib/mysql
+              type: volume
+              volume:
+                nocopy: true
+            - bind:
+                create_host_path: true
+              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev
+              target: /mnt/ddev_config
+              type: bind
+            - bind:
+                create_host_path: true
+              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/db_snapshots
+              target: /mnt/snapshots
+              type: bind
+            - source: ddev-global-cache
+              target: /mnt/ddev-global-cache
+              type: volume
+              volume: {}
+        working_dir: /home/test
+    web:
+        build:
+            args:
+                BASE_IMAGE: ddev/ddev-webserver:v1.24.7
+                DDEV_DATABASE: mysql:8.4
+                DDEV_PHP_VERSION: "8.4"
+                gid: "1000"
+                uid: "1000"
+                username: test
+            context: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/.webimageBuild
+            dockerfile: Dockerfile
+        cap_add:
+            - SYS_PTRACE
+        command:
+            - /pre-start.sh
+        container_name: ddev-studyorganizer-web
+        environment:
+            COLUMNS: "118"
+            COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
+            COREPACK_HOME: /mnt/ddev-global-cache/corepack
+            DDEV_APPROOT: /var/www/html
+            DDEV_COMPOSER_ROOT: /var/www/html
+            DDEV_DATABASE: mysql:8.4
+            DDEV_DATABASE_FAMILY: mysql
+            DDEV_DOCROOT: ""
+            DDEV_FILES_DIR: ""
+            DDEV_FILES_DIRS: ""
+            DDEV_GID: "1000"
+            DDEV_GOARCH: amd64
+            DDEV_GOOS: linux
+            DDEV_HOSTNAME: studyorganizer.ddev.site
+            DDEV_MUTAGEN_ENABLED: "false"
+            DDEV_PHP_VERSION: "8.4"
+            DDEV_PRIMARY_URL: https://studyorganizer.ddev.site
+            DDEV_PRIMARY_URL_PORT: "443"
+            DDEV_PRIMARY_URL_WITHOUT_PORT: https://studyorganizer.ddev.site
+            DDEV_PROJECT: studyorganizer
+            DDEV_PROJECT_TYPE: php
+            DDEV_ROUTER_HTTP_PORT: "80"
+            DDEV_ROUTER_HTTPS_PORT: "443"
+            DDEV_SCHEME: https
+            DDEV_SITENAME: studyorganizer
+            DDEV_TLD: ddev.site
+            DDEV_UID: "1000"
+            DDEV_USER: test
+            DDEV_VERSION: v1.24.7
+            DDEV_WEB_ENTRYPOINT: /mnt/ddev_config/web-entrypoint.d
+            DDEV_WEBSERVER_TYPE: apache-fpm
+            DDEV_XDEBUG_ENABLED: "false"
+            DDEV_XHPROF_MODE: prepend
+            DEPLOY_NAME: local
+            DOCKER_IP: 127.0.0.1
+            DOCROOT: ""
+            DRUSH_OPTIONS_URI: https://studyorganizer.ddev.site
+            HOST_DOCKER_INTERNAL_IP: 172.20.240.1
+            HTTP_EXPOSE: 80:80,8025:8025
+            HTTPS_EXPOSE: 443:80,8026:8025
+            IS_DDEV_PROJECT: "true"
+            LINES: "39"
+            MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/studyorganizer-web/mysql_history
+            NODE_EXTRA_CA_CERTS: /mnt/ddev-global-cache/mkcert/rootCA.pem
+            PGDATABASE: db
+            PGHOST: db
+            PGPASSWORD: db
+            PGUSER: db
+            PHP_IDE_CONFIG: serverName=studyorganizer.ddev.site
+            SSH_AUTH_SOCK: /home/.ssh-agent/socket
+            START_SCRIPT_TIMEOUT: "30"
+            TZ: Europe/Berlin
+            USER: test
+            VIRTUAL_HOST: studyorganizer.ddev.site
+            npm_config_cache: /mnt/ddev-global-cache/npm
+        external_links:
+            - ddev-router:studyorganizer.ddev.site
+        extra_hosts:
+            - host.docker.internal=172.20.240.1
+        healthcheck:
+            interval: 1s
+            retries: 70
+            start_interval: 1s
+            start_period: 2m0s
+            timeout: 1m10s
+        hostname: studyorganizer-web
+        image: ddev/ddev-webserver:v1.24.7-studyorganizer-built
+        labels:
+            com.ddev.app-type: php
+            com.ddev.approot: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+            com.ddev.platform: ddev
+            com.ddev.site-name: studyorganizer
+        networks:
+            ddev_default: null
+            default: null
+        ports:
+            - host_ip: 127.0.0.1
+              mode: ingress
+              protocol: tcp
+              target: 80
+            - host_ip: 127.0.0.1
+              mode: ingress
+              protocol: tcp
+              target: 443
+            - host_ip: 127.0.0.1
+              mode: ingress
+              protocol: tcp
+              target: 8025
+        restart: "no"
+        user: 1000:1000
+        volumes:
+            - consistency: cached
+              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+              target: /var/www/html
+              type: bind
+            - bind:
+                create_host_path: true
+              read_only: true
+              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev
+              target: /mnt/ddev_config
+              type: bind
+            - bind:
+                create_host_path: true
+              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/xhprof
+              target: /usr/local/bin/xhprof
+              type: bind
+            - source: ddev-global-cache
+              target: /mnt/ddev-global-cache
+              type: volume
+              volume: {}
+            - source: ddev-ssh-agent_socket_dir
+              target: /home/.ssh-agent
+              type: volume
+              volume: {}
+        working_dir: /var/www/html/
+    xhgui:
+        container_name: ddev-studyorganizer-xhgui
+        depends_on:
+            db:
+                condition: service_started
+                required: true
+        environment:
+            DDEV_DATABASE_FAMILY: mysql
+            HTTP_EXPOSE: 8143:80
+            HTTPS_EXPOSE: 8142:80
+            TZ: Europe/Berlin
+            VIRTUAL_HOST: studyorganizer.ddev.site
+            XHGUI_PDO_PASS: db
+            XHGUI_PDO_USER: db
+            XHGUI_SAVE_HANDLER: pdo
+        image: ddev/ddev-xhgui:v1.24.7
+        labels:
+            com.ddev.approot: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+            com.ddev.site-name: studyorganizer
+        links:
+            - db
+        networks:
+            ddev_default: null
+            default: null
+        profiles:
+            - xhgui
+        restart: "no"
+volumes:
+    database:
+        external: true
+        name: studyorganizer-mariadb
+    ddev-global-cache:
+        external: true
+        name: ddev-global-cache
+    ddev-ssh-agent_socket_dir:
+        external: true
+        name: ddev-ssh-agent_socket_dir

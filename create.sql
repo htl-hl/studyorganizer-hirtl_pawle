@@ -10,7 +10,7 @@ create table Lehrer(
 	Vorname varchar (255),
 	Nachname varchar (255),
 	Kuerzel varchar (255),
-	Status boolean
+	Aktiv boolean
 );
 create table Faecher(
 	F_Name varchar (255) Unique PRIMARY KEY
