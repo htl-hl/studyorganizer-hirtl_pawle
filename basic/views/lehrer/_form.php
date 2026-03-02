@@ -18,7 +18,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Kuerzel')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Status')->textInput() ?>
+    <?= $form->field($model, 'Aktiv')->checkbox() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

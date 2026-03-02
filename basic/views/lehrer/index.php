@@ -10,11 +10,10 @@ use yii\widgets\Pjax;
 /** @var app\models\LehrerSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Lehrers');
+$this->title = Yii::t('app', 'Lehrer');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="lehrer-index">
-
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
@@ -34,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'Vorname',
             'Nachname',
             'Kuerzel',
-            'Status',
+            'Aktiv',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Lehrer $model, $key, $index, $column) {

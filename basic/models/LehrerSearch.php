@@ -17,8 +17,9 @@ class LehrerSearch extends Lehrer
     public function rules()
     {
         return [
-            [['L_ID', 'Status'], 'integer'],
+            [['L_ID'], 'integer'],
             [['Vorname', 'Nachname', 'Kuerzel'], 'safe'],
+            [['Aktiv'], 'boolean']
         ];
     }
 
@@ -60,7 +61,7 @@ class LehrerSearch extends Lehrer
         // grid filtering conditions
         $query->andFilterWhere([
             'L_ID' => $this->L_ID,
-            'Status' => $this->Status,
+            'Aktiv' => $this->Aktiv,
         ]);
 
         $query->andFilterWhere(['like', 'Vorname', $this->Vorname])

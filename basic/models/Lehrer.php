@@ -11,7 +11,7 @@ use Yii;
  * @property string|null $Vorname
  * @property string|null $Nachname
  * @property string|null $Kuerzel
- * @property int|null $Status
+ * @property int|null $Aktiv
  */
 class Lehrer extends \yii\db\ActiveRecord
 {
@@ -31,8 +31,8 @@ class Lehrer extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['Vorname', 'Nachname', 'Kuerzel', 'Status'], 'default', 'value' => null],
-            [['Status'], 'integer'],
+            [['Vorname', 'Nachname', 'Kuerzel', 'Aktiv'], 'default', 'value' => null],
+            [['Aktiv'], 'boolean'],
             [['Vorname', 'Nachname', 'Kuerzel'], 'string', 'max' => 255],
         ];
     }
@@ -47,7 +47,7 @@ class Lehrer extends \yii\db\ActiveRecord
             'Vorname' => Yii::t('app', 'Vorname'),
             'Nachname' => Yii::t('app', 'Nachname'),
             'Kuerzel' => Yii::t('app', 'Kuerzel'),
-            'Status' => Yii::t('app', 'Status'),
+            'Aktiv' => Yii::t('app', 'Aktiv'),
         ];
     }
 
