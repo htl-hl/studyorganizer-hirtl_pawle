@@ -14,8 +14,8 @@ services:
                 BASE_IMAGE: ddev/ddev-dbserver-mysql-8.4:v1.24.7
                 gid: "1000"
                 uid: "1000"
-                username: test
-            context: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/.dbimageBuild
+                username: alexpa
+            context: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle/.ddev/.dbimageBuild
             dockerfile: Dockerfile
         cap_add:
             - SYS_NICE
@@ -23,7 +23,7 @@ services:
         container_name: ddev-studyorganizer-db
         environment:
             BITNAMI_VOLUME_DIR: /bitnami/mysql
-            COLUMNS: "118"
+            COLUMNS: "156"
             DDEV_DATABASE: mysql:8.4
             DDEV_DATABASE_FAMILY: mysql
             DDEV_GID: "1000"
@@ -42,12 +42,12 @@ services:
             DDEV_SITENAME: studyorganizer
             DDEV_TLD: ddev.site
             DDEV_UID: "1000"
-            DDEV_USER: test
+            DDEV_USER: alexpa
             DDEV_VERSION: v1.24.7
             DOCKER_IP: 127.0.0.1
-            HOST_DOCKER_INTERNAL_IP: 172.20.240.1
+            HOST_DOCKER_INTERNAL_IP: 172.23.144.1
             IS_DDEV_PROJECT: "true"
-            LINES: "39"
+            LINES: "41"
             MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/studyorganizer-db/mysql_history
             PGDATABASE: db
             PGHOST: 127.0.0.1
@@ -56,8 +56,8 @@ services:
             POSTGRES_DB: db
             POSTGRES_PASSWORD: db
             POSTGRES_USER: db
-            TZ: Europe/Berlin
-            USER: test
+            TZ: Europe/Vienna
+            USER: alexpa
         healthcheck:
             interval: 1s
             retries: 70
@@ -68,7 +68,7 @@ services:
         image: ddev/ddev-dbserver-mysql-8.4:v1.24.7-studyorganizer-built
         labels:
             com.ddev.app-type: php
-            com.ddev.approot: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+            com.ddev.approot: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle
             com.ddev.platform: ddev
             com.ddev.site-name: studyorganizer
         networks:
@@ -90,19 +90,19 @@ services:
                 nocopy: true
             - bind:
                 create_host_path: true
-              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev
+              source: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle/.ddev
               target: /mnt/ddev_config
               type: bind
             - bind:
                 create_host_path: true
-              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/db_snapshots
+              source: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle/.ddev/db_snapshots
               target: /mnt/snapshots
               type: bind
             - source: ddev-global-cache
               target: /mnt/ddev-global-cache
               type: volume
               volume: {}
-        working_dir: /home/test
+        working_dir: /home/alexpa
     web:
         build:
             args:
@@ -111,8 +111,8 @@ services:
                 DDEV_PHP_VERSION: "8.4"
                 gid: "1000"
                 uid: "1000"
-                username: test
-            context: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/.webimageBuild
+                username: alexpa
+            context: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle/.ddev/.webimageBuild
             dockerfile: Dockerfile
         cap_add:
             - SYS_PTRACE
@@ -120,7 +120,7 @@ services:
             - /pre-start.sh
         container_name: ddev-studyorganizer-web
         environment:
-            COLUMNS: "118"
+            COLUMNS: "156"
             COREPACK_ENABLE_DOWNLOAD_PROMPT: "0"
             COREPACK_HOME: /mnt/ddev-global-cache/corepack
             DDEV_APPROOT: /var/www/html
@@ -147,7 +147,7 @@ services:
             DDEV_SITENAME: studyorganizer
             DDEV_TLD: ddev.site
             DDEV_UID: "1000"
-            DDEV_USER: test
+            DDEV_USER: alexpa
             DDEV_VERSION: v1.24.7
             DDEV_WEB_ENTRYPOINT: /mnt/ddev_config/web-entrypoint.d
             DDEV_WEBSERVER_TYPE: apache-fpm
@@ -157,11 +157,11 @@ services:
             DOCKER_IP: 127.0.0.1
             DOCROOT: ""
             DRUSH_OPTIONS_URI: https://studyorganizer.ddev.site
-            HOST_DOCKER_INTERNAL_IP: 172.20.240.1
+            HOST_DOCKER_INTERNAL_IP: 172.23.144.1
             HTTP_EXPOSE: 80:80,8025:8025
             HTTPS_EXPOSE: 443:80,8026:8025
             IS_DDEV_PROJECT: "true"
-            LINES: "39"
+            LINES: "41"
             MYSQL_HISTFILE: /mnt/ddev-global-cache/mysqlhistory/studyorganizer-web/mysql_history
             NODE_EXTRA_CA_CERTS: /mnt/ddev-global-cache/mkcert/rootCA.pem
             PGDATABASE: db
@@ -171,14 +171,14 @@ services:
             PHP_IDE_CONFIG: serverName=studyorganizer.ddev.site
             SSH_AUTH_SOCK: /home/.ssh-agent/socket
             START_SCRIPT_TIMEOUT: "30"
-            TZ: Europe/Berlin
-            USER: test
+            TZ: Europe/Vienna
+            USER: alexpa
             VIRTUAL_HOST: studyorganizer.ddev.site
             npm_config_cache: /mnt/ddev-global-cache/npm
         external_links:
             - ddev-router:studyorganizer.ddev.site
         extra_hosts:
-            - host.docker.internal=172.20.240.1
+            - host.docker.internal=172.23.144.1
         healthcheck:
             interval: 1s
             retries: 70
@@ -189,7 +189,7 @@ services:
         image: ddev/ddev-webserver:v1.24.7-studyorganizer-built
         labels:
             com.ddev.app-type: php
-            com.ddev.approot: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+            com.ddev.approot: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle
             com.ddev.platform: ddev
             com.ddev.site-name: studyorganizer
         networks:
@@ -212,18 +212,18 @@ services:
         user: 1000:1000
         volumes:
             - consistency: cached
-              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+              source: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle
               target: /var/www/html
               type: bind
             - bind:
                 create_host_path: true
               read_only: true
-              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev
+              source: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle/.ddev
               target: /mnt/ddev_config
               type: bind
             - bind:
                 create_host_path: true
-              source: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle/.ddev/xhprof
+              source: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle/.ddev/xhprof
               target: /usr/local/bin/xhprof
               type: bind
             - source: ddev-global-cache
@@ -245,14 +245,14 @@ services:
             DDEV_DATABASE_FAMILY: mysql
             HTTP_EXPOSE: 8143:80
             HTTPS_EXPOSE: 8142:80
-            TZ: Europe/Berlin
+            TZ: Europe/Vienna
             VIRTUAL_HOST: studyorganizer.ddev.site
             XHGUI_PDO_PASS: db
             XHGUI_PDO_USER: db
             XHGUI_SAVE_HANDLER: pdo
         image: ddev/ddev-xhgui:v1.24.7
         labels:
-            com.ddev.approot: /mnt/c/Users/Alex/Documents/HTL_3AHITS/INSY/Projekte/studyorganizer-hirtl_pawle
+            com.ddev.approot: /mnt/c/Users/alexa/Desktop/HTL/INSY/studyorganizer-hirtl_pawle
             com.ddev.site-name: studyorganizer
         links:
             - db

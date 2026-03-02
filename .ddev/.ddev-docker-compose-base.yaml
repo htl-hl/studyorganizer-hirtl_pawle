@@ -8,14 +8,14 @@ services:
       context: './.dbimageBuild'
       args:
         BASE_IMAGE: $DDEV_DBIMAGE
-        username: 'test'
+        username: 'alexpa'
         uid: '1000'
         gid:  1000 
     image: ${DDEV_DBIMAGE}-${DDEV_SITENAME}-built
     cap_add:
       - SYS_NICE
     stop_grace_period: 60s
-    working_dir: "/home/test"
+    working_dir: "/home/alexpa"
     volumes:
       - type: "volume"
         source: "database"
@@ -64,7 +64,7 @@ services:
       - DDEV_USER
       - DDEV_VERSION
       - DOCKER_IP=127.0.0.1
-      - HOST_DOCKER_INTERNAL_IP=172.20.240.1
+      - HOST_DOCKER_INTERNAL_IP=172.23.144.1
       - IS_DDEV_PROJECT=true
       - LINES
       - MYSQL_HISTFILE=/mnt/ddev-global-cache/mysqlhistory/${DDEV_SITENAME}-db/mysql_history
@@ -75,8 +75,8 @@ services:
       - POSTGRES_PASSWORD=db
       - POSTGRES_USER=db
       - POSTGRES_DB=db
-      - TZ=Europe/Berlin
-      - USER=test
+      - TZ=Europe/Vienna
+      - USER=alexpa
     command: ${DDEV_DB_CONTAINER_COMMAND}
     healthcheck:
       interval: "1s"
@@ -92,7 +92,7 @@ services:
       context: './.webimageBuild'
       args:
         BASE_IMAGE: $DDEV_WEBIMAGE
-        username: 'test'
+        username: 'alexpa'
         uid: '1000'
         gid: '1000'
         DDEV_PHP_VERSION: ${DDEV_PHP_VERSION}
@@ -172,7 +172,7 @@ services:
     - DRUSH_OPTIONS_URI=$DDEV_PRIMARY_URL
     
     - DOCKER_IP=127.0.0.1
-    - HOST_DOCKER_INTERNAL_IP=172.20.240.1
+    - HOST_DOCKER_INTERNAL_IP=172.23.144.1
     # HTTP_EXPOSE allows for ports accepting HTTP traffic to be accessible from <site>.ddev.site:<port>
     # To expose a container port to a different host port, define the port as hostPort:containerPort
     # You can optionally expose an HTTPS port option for any ports defined in HTTP_EXPOSE.
@@ -192,8 +192,8 @@ services:
     - PGUSER=db
     - PHP_IDE_CONFIG=serverName=${DDEV_SITENAME}.${DDEV_TLD}
     - SSH_AUTH_SOCK=/home/.ssh-agent/socket
-    - TZ=Europe/Berlin
-    - USER=test
+    - TZ=Europe/Vienna
+    - USER=alexpa
     - VIRTUAL_HOST=${DDEV_HOSTNAME}
     - START_SCRIPT_TIMEOUT=30
     
@@ -204,7 +204,7 @@ services:
       com.ddev.approot: $DDEV_APPROOT
 
       
-    extra_hosts: [ "host.docker.internal:172.20.240.1" ]
+    extra_hosts: [ "host.docker.internal:172.23.144.1" ]
       
 
       
@@ -238,7 +238,7 @@ services:
       - DDEV_DATABASE_FAMILY=${DDEV_DATABASE_FAMILY}
       - XHGUI_PDO_USER=db
       - XHGUI_PDO_PASS=db
-      - TZ=Europe/Berlin
+      - TZ=Europe/Vienna
     links:
       - db
     depends_on:
