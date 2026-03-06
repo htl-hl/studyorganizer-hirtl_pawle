@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Faecher;
 use app\models\FaecherSearch;
+use app\models\Lehrer;
+use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -68,6 +70,9 @@ class FaecherController extends Controller
     public function actionCreate()
     {
         $model = new Faecher();
+        $lehrer = Lehrer::find()->all();
+        $dropdown = ArrayHelper::map($lehrer, 'L_ID', 'Kuerzel');
+
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -79,6 +84,7 @@ class FaecherController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'dropdown' => $dropdown
         ]);
     }
 
