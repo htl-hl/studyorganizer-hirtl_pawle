@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\Aufgaben;
+use app\models\Post;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -61,7 +63,11 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $aufgaben = Aufgaben::find()->all();
+
+        return $this->render('/site/index', [
+            'aufgaben' => $aufgaben,
+        ]);
     }
 
     /**
