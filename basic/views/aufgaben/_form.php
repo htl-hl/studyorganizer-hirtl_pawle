@@ -16,15 +16,12 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Beschreibung')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Faelligkeitsdatum')->textInput() ?>
-
-    <?= $form->field($model, 'Erledigt')->textInput() ?>
-
-    <?= $form->field($model, 'L_ID')->textInput() ?>
-
     <?= $form->field($model, 'F_Name')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'U_ID')->textInput() ?>
+    <?= $form->field($model, 'Faelligkeitsdatum')->textInput() ?>
+
+    <?= $form->field($model, 'Erledigt')->checkbox() ?>
+
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

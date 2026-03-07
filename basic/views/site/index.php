@@ -55,7 +55,11 @@ function getTaskDueDateClass(DateTime $dueDate): string
                                     ['class' => 'link-dark link-underline link-underline-opacity-0 link-underline-opacity-75-hover']
                             ) ?>
                         </h5>
-                        <p class="card-text"><?= Html::encode($aufgabe->Beschreibung) ?></p>
+                        <p class="card-text">
+                            <?= Html::encode($aufgabe->Beschreibung) ?>
+                            <br>
+                            <strong>Fällig am:</strong> <?= Html::encode($aufgabe->Faelligkeitsdatum)?>
+                        </p>
                     </div>
 
                 </div>
