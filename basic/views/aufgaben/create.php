@@ -5,9 +5,7 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Aufgaben $model */
 
-$this->title = Yii::t('app', 'Create Aufgaben');
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Aufgabens'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = Yii::t('app', 'Aufgabe hinzufügen');
 ?>
 <div class="aufgaben-create">
 
