@@ -22,6 +22,9 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Erledigt')->checkbox() ?>
 
+    <?= $form->field($model, 'L_ID')->textInput() ?>
+
+    <?= $form->field($model, 'U_ID')->textInput() ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
