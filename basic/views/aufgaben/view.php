@@ -6,9 +6,7 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Aufgaben $model */
 
-$this->title = $model->Aufgaben_ID;
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Aufgabens'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = $model->Titel;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="aufgaben-view">
@@ -29,15 +27,15 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
-            'Aufgaben_ID',
             'Titel',
             'Beschreibung',
             'Faelligkeitsdatum',
-            'Erledigt',
-            'L_ID',
             'F_Name',
-            'U_ID',
-        ],
+            [
+                    'label' => 'Erledigt',
+                    'format'=> 'raw',
+                    'value' => Html::checkbox('Erledigt', (bool)$model->Erledigt)],
+            ],
     ]) ?>
 
 </div>
