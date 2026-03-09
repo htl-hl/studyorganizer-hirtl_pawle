@@ -54,10 +54,10 @@ class Aufgaben extends \yii\db\ActiveRecord
             'Aufgaben_ID' => Yii::t('app', 'Aufgaben ID'),
             'Titel' => Yii::t('app', 'Titel'),
             'Beschreibung' => Yii::t('app', 'Beschreibung'),
-            'Faelligkeitsdatum' => Yii::t('app', 'Faelligkeitsdatum'),
+            'Faelligkeitsdatum' => Yii::t('app', 'Fälligkeitsdatum'),
             'Erledigt' => Yii::t('app', 'Erledigt'),
             'L_ID' => Yii::t('app', 'L ID'),
-            'F_Name' => Yii::t('app', 'F Name'),
+            'F_Name' => Yii::t('app', 'Fächername'),
             'U_ID' => Yii::t('app', 'U ID'),
         ];
     }

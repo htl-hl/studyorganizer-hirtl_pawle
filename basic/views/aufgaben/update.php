@@ -5,12 +5,9 @@ use yii\helpers\Html;
 /** @var yii\web\View $this */
 /** @var app\models\Aufgaben $model */
 
-$this->title = Yii::t('app', 'Update Aufgaben: {name}', [
-    'name' => $model->Aufgaben_ID,
+$this->title = Yii::t('app', 'Bearbeite Aufgabe: {name}', [
+    'name' => $model->Titel,
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Aufgabens'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->Aufgaben_ID, 'url' => ['view', 'Aufgaben_ID' => $model->Aufgaben_ID]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="aufgaben-update">
 
