@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use DateTime;
 use Yii;
 
 /**
@@ -18,14 +19,35 @@ use Yii;
  */
 class Aufgaben extends \yii\db\ActiveRecord
 {
-
-
     /**
      * {@inheritdoc}
      */
     public static function tableName()
     {
         return 'Stundenplan.Aufgaben';
+    }
+
+    /**
+     * @throws \Exception
+     */
+    public static function getTaskDueDateClass(Aufgaben $aufgabe): string
+    {
+        $now  = new DateTime();
+        $dueDate = new DateTime($aufgabe->Faelligkeitsdatum);
+        $diff = $now->diff($dueDate);
+        //var_dump($aufgabe);
+
+        if ($dueDate < $now) {
+            return 'border-danger'; // überfällig
+        }
+
+        $daysLeft = (int) $diff->days;
+        return match(true) {
+            $daysLeft < 1  => 'border-danger',
+            $daysLeft < 7  => 'border-warning',
+            $daysLeft < 14 => 'border-primary',
+            default        => '',
+        };
     }
 
     /**
@@ -70,5 +92,4 @@ class Aufgaben extends \yii\db\ActiveRecord
     {
         return new AufgabenQuery(get_called_class());
     }
-
 }

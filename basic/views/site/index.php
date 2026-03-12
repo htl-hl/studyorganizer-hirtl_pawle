@@ -3,28 +3,10 @@
 /** @var yii\web\View $this */
 /** @var Aufgaben[] $aufgaben */
 
-
+use app\models\Aufgaben;
 use yii\helpers\Html;
 $this->title = 'Homepage';
 
-function getTaskDueDateClass(DateTime $dueDate): string
-{
-    $now  = new DateTime();
-    $diff = $now->diff($dueDate);
-
-    if ($dueDate < $now) {
-        return 'border-danger'; // überfällig
-    }
-
-    $daysLeft = (int) $diff->days;
-
-    return match(true) {
-        $daysLeft < 1  => 'border-danger',
-        $daysLeft < 7  => 'border-warning',
-        $daysLeft < 14 => 'border-primary',
-        default        => '',
-    };
-}
 ?>
 <div class="site-index">
 
@@ -41,14 +23,9 @@ function getTaskDueDateClass(DateTime $dueDate): string
                 </div>
             </div>
         </div>
-
         <?php foreach ($aufgaben as $aufgabe): ?>
-            <?php
-            $dueDate  = new DateTime($aufgabe->Faelligkeitsdatum);
-            $cssClass = getTaskDueDateClass($dueDate);
-            ?>
             <div class="col-4 p-3">
-                <div class="card <?= $cssClass ?> border-3  " style="height: 100px;">
+                <div class="card border border-3 <?= \app\models\Aufgaben::getTaskDueDateClass($aufgabe) ?> " style="height: 100px;">
                     <div class="card-body">
                         <h5 class="card-title">
                             <?= Html::a(
