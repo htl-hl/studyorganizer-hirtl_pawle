@@ -33,24 +33,35 @@ INSERT INTO Aufgaben (Titel, Beschreibung, Faelligkeitsdatum, Erledigt, L_ID, F_
 
 INSERT INTO Lehrer_hat_Fach (LHF_F_Name, LHF_L_ID) VALUES
 -- Test Soos
-('Mathematik', 1), ('Physik', 1),
+('Mathematik', 1),
+('Physik', 1),
 -- Max Mustermann
-('Deutsch', 2), ('Geschichte', 3),
+('Deutsch', 2),
+('Geschichte', 3),
 -- Erika Schmidt
-('Biologie', 3), ('Chemie', 3),
+('Biologie', 3),
+('Chemie', 3),
 -- Hans Gruber
-('Informatik', 4), ('Mathematik', 4),
+('Informatik', 4),
+('Mathematik', 4),
 -- Julia Meier
-('Englisch', 5), ('Deutsch', 5),
+('Englisch', 5),
+('Deutsch', 5),
 -- Peter Lustig
-('Physik', 6), ('Chemie', 6),
+('Physik', 6),
+('Chemie', 6),
 -- Sarah Kohl
-('Kunst', 7), ('Geschichte', 7),
+('Kunst', 7),
+('Geschichte', 7),
 -- Bernd Brot
-('Sport', 8), ('Biologie', 8),
+('Sport', 8),
+('Biologie', 8),
 -- Monika Bauer
-('Mathematik', 9), ('Englisch', 9),
+('Mathematik', 9),
+('Englisch', 9),
 -- Klaus Klein
-('Informatik', 10), ('Physik', 10),
+('Informatik', 10),
+('Physik', 10),
 -- Petra Pan
-('Kunst', 11), ('Sport', 11);
+('Kunst', 11),
+('Sport', 11);
