@@ -12,7 +12,7 @@ $this->title = 'Homepage';
 
     <div class="row">
         <div class="col-4 p-3">
-            <div class="card" style="height: 100px;">
+            <div class="card" style="height: 150px;">
                 <div class="card-body">
                     <a href="../aufgaben/create">
                         <svg xmlns="http://www.w3.org/2000/svg" height="75" width="75" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16" alignment="center">
@@ -25,7 +25,7 @@ $this->title = 'Homepage';
         </div>
         <?php foreach ($aufgaben as $aufgabe): ?>
             <div class="col-4 p-3">
-                <div class="card border border-3 <?= \app\models\Aufgaben::getTaskDueDateClass($aufgabe) ?> " style="height: 100px;">
+                <div class="card border border-3 <?= \app\models\Aufgaben::getTaskDueDateClass($aufgabe) ?> " style="height: 150px;">
                     <div class="card-body">
                         <h5 class="card-title">
                             <?= Html::a(
@@ -35,6 +35,8 @@ $this->title = 'Homepage';
                             ) ?>
                         </h5>
                         <p class="card-text">
+                            <?= Html::encode($aufgabe->F_Name) ?>
+                            <br>
                             <?= Html::encode($aufgabe->Beschreibung) ?>
                             <br>
                             <strong>Fällig am:</strong> <?= Html::encode($aufgabe->Faelligkeitsdatum)?>
