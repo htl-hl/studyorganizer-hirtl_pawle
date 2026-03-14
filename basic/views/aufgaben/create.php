@@ -13,6 +13,8 @@ $this->title = Yii::t('app', 'Aufgabe hinzufügen');
 
     <?= $this->render('_form', [
         'model' => $model,
+        'faecherList' => $faecherList,
+        'lehrerList' => $lehrerList,
     ]) ?>
 
 </div>

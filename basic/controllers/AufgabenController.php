@@ -2,11 +2,16 @@
 
 namespace app\controllers;
 
+use Yii;
 use app\models\Aufgaben;
 use app\models\AufgabenSearch;
+use app\models\Faecher;
+use app\models\Lehrer;
+use PhpParser\Node\Expr\Array_;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * AufgabenController implements the CRUD actions for Aufgaben model.
@@ -69,6 +74,14 @@ class AufgabenController extends Controller
     {
         $model = new Aufgaben();
 
+        $faecherList = ArrayHelper::map(
+            Faecher::find()->all(),
+            'F_Name',
+            'F_Name',
+        );
+
+        $lehrerList = [];
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
                 return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
@@ -79,6 +92,8 @@ class AufgabenController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'faecherList' => $faecherList,
+            'lehrerList' => $lehrerList,
         ]);
     }
 
@@ -86,12 +101,35 @@ class AufgabenController extends Controller
      * Updates an existing Aufgaben model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $Aufgaben_ID Aufgaben ID
-     * @return string|\yii\web\Response
+     * @return array
      * @throws NotFoundHttpException if the model cannot be found
      */
+
+    public function actionGetLehrerByFach($fach)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $lehrer = Lehrer::find()
+            ->joinWith('lehrerHatFach')
+            ->where(['LHF_F_Name' => $fach])
+            //->andWhere(['Aktiv' => 1])
+            ->all();
+
+        return ArrayHelper::map($lehrer, 'L_ID', function($l) {
+            return $l->Vorname . ' ' . $l->Nachname;});
+    }
+
     public function actionUpdate($Aufgaben_ID)
     {
         $model = $this->findModel($Aufgaben_ID);
+
+        $faecherList = ArrayHelper::map(
+            Faecher::find()->all(),
+            'F_Name',
+            'F_Name',
+        );
+
+        $lehrerList = [];
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
@@ -99,6 +137,8 @@ class AufgabenController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'faecherList' => $faecherList,
+            'lehrerList' => $lehrerList,
         ]);
     }
 

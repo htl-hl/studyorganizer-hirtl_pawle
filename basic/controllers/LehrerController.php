@@ -3,10 +3,13 @@
 namespace app\controllers;
 
 use app\models\Lehrer;
+use app\models\Faecher;
+use app\models\LehrerHatFach;
 use app\models\LehrerSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
 
 /**
  * LehrerController implements the CRUD actions for Lehrer model.
@@ -69,8 +72,24 @@ class LehrerController extends Controller
     {
         $model = new Lehrer();
 
+        $faecherList = ArrayHelper::map(
+            Faecher::find()->all(),
+            'F_Name',
+            'F_Name',
+        );
+
+        $selectedFaecher = [];
+
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
+
+                $selectedFaecher = \Yii::$app->request->post('selectedFaecher', []);
+                foreach ($selectedFaecher as $fach) {
+                    $lehrerHatFach = new LehrerHatFach();
+                    $lehrerHatFach->LHF_L_ID = $model->L_ID;
+                    $lehrerHatFach->LHF_F_Name = $fach;
+                    $lehrerHatFach->save();
+                }
                 return $this->redirect(['view', 'L_ID' => $model->L_ID]);
             }
         } else {
@@ -79,6 +98,8 @@ class LehrerController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'faecherList' => $faecherList,
+            'selectedFaecher' => $selectedFaecher,
         ]);
     }
 
@@ -93,12 +114,33 @@ class LehrerController extends Controller
     {
         $model = $this->findModel($L_ID);
 
+        $faecherList = ArrayHelper::map(
+            Faecher::find()->all(),
+            'F_Name',
+            'F_Name',
+        );
+
+        $selectedFaecher = LehrerHatFach::find()
+            ->where(['LHF_L_ID' => $L_ID])
+            ->select('LHF_F_Name')
+            ->column();
+
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            LehrerHatFach::deleteAll(['LHF_L_ID' => $L_ID]);
+            $selectedFaecher = \Yii::$app->request->post('selectedFaecher', []);
+            foreach ($selectedFaecher as $fach) {
+                $lhf = new LehrerHatFach();
+                $lhf->LHF_L_ID = $model->L_ID;
+                $lhf->LHF_F_Name = $fach;
+                $lhf->save();
+            }
             return $this->redirect(['view', 'L_ID' => $model->L_ID]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'faecherList' => $faecherList,
+            'selectedFaecher' => $selectedFaecher,
         ]);
     }
 
