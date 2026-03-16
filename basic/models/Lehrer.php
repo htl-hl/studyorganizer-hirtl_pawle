@@ -51,6 +51,11 @@ class Lehrer extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getLehrerHatFach()
+    {
+        return $this->hasMany(LehrerHatFach::class, ['LHF_L_ID' => 'L_ID']);
+    }
+
     /**
      * {@inheritdoc}
      * @return StundenplanQuery the active query used by this AR class.

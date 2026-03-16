@@ -34,6 +34,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'Nachname',
             'Kuerzel',
             'Aktiv',
+                [
+                        'label' => 'Fächer',
+                        'value' => function($model) {
+                            $faecher = \app\models\LehrerHatFach::find()
+                                    ->where(['LHF_L_ID' => $model->L_ID])
+                                    ->select('LHF_F_Name')
+                                    ->column();
+                            return implode(', ', $faecher);
+                        },
+                ],
         ],
     ]) ?>
 

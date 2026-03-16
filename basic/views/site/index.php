@@ -3,34 +3,16 @@
 /** @var yii\web\View $this */
 /** @var Aufgaben[] $aufgaben */
 
-
+use app\models\Aufgaben;
 use yii\helpers\Html;
 $this->title = 'Homepage';
 
-function getTaskDueDateClass(DateTime $dueDate): string
-{
-    $now  = new DateTime();
-    $diff = $now->diff($dueDate);
-
-    if ($dueDate < $now) {
-        return 'border-danger'; // überfällig
-    }
-
-    $daysLeft = (int) $diff->days;
-
-    return match(true) {
-        $daysLeft < 1  => 'border-danger',
-        $daysLeft < 7  => 'border-warning',
-        $daysLeft < 14 => 'border-primary',
-        default        => '',
-    };
-}
 ?>
 <div class="site-index">
 
     <div class="row">
         <div class="col-4 p-3">
-            <div class="card" style="height: 100px;">
+            <div class="card" style="height: 150px;">
                 <div class="card-body">
                     <a href="../aufgaben/create">
                         <svg xmlns="http://www.w3.org/2000/svg" height="75" width="75" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16" alignment="center">
@@ -41,14 +23,9 @@ function getTaskDueDateClass(DateTime $dueDate): string
                 </div>
             </div>
         </div>
-
         <?php foreach ($aufgaben as $aufgabe): ?>
-            <?php
-            $dueDate  = new DateTime($aufgabe->Faelligkeitsdatum);
-            $cssClass = getTaskDueDateClass($dueDate);
-            ?>
             <div class="col-4 p-3">
-                <div class="card <?= $cssClass ?> border-3  " style="height: 100px;">
+                <div class="card border border-3 <?= \app\models\Aufgaben::getTaskDueDateClass($aufgabe) ?> " style="height: 150px;">
                     <div class="card-body">
                         <h5 class="card-title">
                             <?= Html::a(
@@ -58,6 +35,8 @@ function getTaskDueDateClass(DateTime $dueDate): string
                             ) ?>
                         </h5>
                         <p class="card-text">
+                            <?= Html::encode($aufgabe->F_Name) ?>
+                            <br>
                             <?= Html::encode($aufgabe->Beschreibung) ?>
                             <br>
                             <strong>Fällig am:</strong> <?= Html::encode($aufgabe->Faelligkeitsdatum)?>

@@ -22,7 +22,7 @@ create table Faecher(
 create table Lehrer_hat_Fach(
 	LHF_F_Name varchar (255),
 	LHF_L_ID int NOT NULL,
-	FOREIGN KEY (LHF_F_Name) REFERENCES Faecher(F_Name),
+	FOREIGN KEY (LHF_F_Name) REFERENCES Faecher(F_Name) ON DELETE CASCADE,
 	FOREIGN KEY (LHF_L_ID) REFERENCES Lehrer(L_ID),
 	PRIMARY KEY (LHF_F_Name, LHF_L_ID)
 );
@@ -36,6 +36,6 @@ create table Aufgaben(
 	F_Name varchar (255),
 	U_ID int NOT NULL,
 	FOREIGN KEY (L_ID) references Lehrer(L_ID),
-	FOREIGN KEY (F_Name) references Faecher(F_Name),
+	FOREIGN KEY (F_Name) references Faecher(F_Name) ON DELETE SET NULL,
 	FOREIGN KEY (U_ID) references User(U_ID)
 );
