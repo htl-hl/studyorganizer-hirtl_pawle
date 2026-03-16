@@ -92,4 +92,19 @@ class Aufgaben extends \yii\db\ActiveRecord
     {
         return new AufgabenQuery(get_called_class());
     }
+
+    public static function sort(array $aufgaben): array
+    {
+        usort($aufgaben, function($a, $b) {
+            $dateA = new DateTime($a->Faelligkeitsdatum);
+            $dateB = new DateTime($b->Faelligkeitsdatum);
+
+            if ($dateA == $dateB) {
+                return 0;
+            }
+            return ($dateA < $dateB) ? -1 : 1;
+        });
+
+        return $aufgaben;
+     }
 }

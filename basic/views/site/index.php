@@ -8,7 +8,10 @@ use yii\helpers\Url;
 
 $this->title = 'Homepage';
 
-// Sort tasks: undone first, then done tasks
+// 1. Sortieren nach Datum (älteste zuerst)
+$aufgaben = \app\models\Aufgaben::sort($aufgaben);
+
+// 2. Sortieren nach Erledigt-Status (Erledigte ans Ende)
 usort($aufgaben, function($a, $b) {
     if ($a->Erledigt == $b->Erledigt) {
         return 0;
@@ -35,9 +38,38 @@ usort($aufgaben, function($a, $b) {
         </div>
 
         <?php foreach ($aufgaben as $aufgabe): ?>
-            <?= $this->render('../aufgaben/aufgaben',
-                    ['aufgabe' => $aufgabe,
-                            ]) ?>
+            <?php if (\app\models\Aufgaben::getTaskDueDateClass($aufgabe) == 'border-danger'): ?>
+                <?= $this->render('../aufgaben/aufgaben.php',
+                        ['aufgabe' => $aufgabe,
+                        ]) ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php foreach ($aufgaben as $aufgabe): ?>
+            <?php if (\app\models\Aufgaben::getTaskDueDateClass($aufgabe) == 'border-primary'): ?>
+                <?= $this->render('../aufgaben/aufgaben.php',
+                        ['aufgabe' => $aufgabe,
+                        ]) ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+
+        <?php foreach ($aufgaben as $aufgabe): ?>
+            <?php if (\app\models\Aufgaben::getTaskDueDateClass($aufgabe) == 'border-warning'): ?>
+                <?= $this->render('../aufgaben/aufgaben.php',
+                        ['aufgabe' => $aufgabe,
+                        ]) ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
+        
+        <?php foreach ($aufgaben as $aufgabe): ?>
+            <?php 
+                $class = \app\models\Aufgaben::getTaskDueDateClass($aufgabe);
+                if ($class != 'border-danger' && $class != 'border-primary' && $class != 'border-warning'): 
+            ?>
+                <?= $this->render('../aufgaben/aufgaben.php',
+                        ['aufgabe' => $aufgabe,
+                        ]) ?>
+            <?php endif; ?>
         <?php endforeach; ?>
     </div>
 </div>
