@@ -3,7 +3,11 @@ Create database Stundenplan;
 use Stundenplan;
 create table User(
 	U_ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	Password varchar(255)
+	Username varchar(255) UNIQUE,
+	Role varchar(255),
+	Password varchar(255),
+	authKey varchar(255),
+	accessToken varchar(255)
 );
 create table Lehrer(
 	L_ID int NOT NULL PRIMARY KEY AUTO_INCREMENT,
