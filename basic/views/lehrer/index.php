@@ -34,7 +34,14 @@ $isAdmin = !Yii::$app->user->isGuest && Yii::$app->user->identity->Role == 'Admi
             'Vorname',
             'Nachname',
             'Kuerzel',
-            'Aktiv',
+            [
+
+                'attribute' => 'Aktiv',
+                'value' => function ($model) {
+                    return $model->Aktiv ? 'Aktiv' : 'Inaktiv';
+                },
+                'filter' => [0 => 'Inaktiv', 1 => 'Aktiv'],
+            ],
             [
                 'class' => ActionColumn::class,
                 'visible' => $isAdmin, // Spalte nur für Admins sichtbar
