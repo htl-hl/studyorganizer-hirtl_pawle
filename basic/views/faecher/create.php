@@ -4,6 +4,7 @@ use yii\helpers\Html;
 
 /** @var yii\web\View $this */
 /** @var app\models\Faecher $model */
+/** @var array $dropdown */
 
 $this->title = Yii::t('app', 'Create Faecher');
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Faechers'), 'url' => ['index']];
@@ -15,6 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= $this->render('_form', [
         'model' => $model,
+        'dropdown' => $dropdown,
     ]) ?>
 
 </div>

@@ -28,7 +28,7 @@ class AufgabenController extends Controller
             [
                 'access' => [
                     'class' => AccessControl::class,
-                    'only' => ['create', 'update', 'delete'], // Nur eingeloggte User dürfen diese Aktionen ausführen
+                    'only' => ['create', 'update', 'delete', 'toggle-erledigt'], // Nur eingeloggte User dürfen diese Aktionen ausführen
                     'rules' => [
                         [
                             'allow' => true,
@@ -40,6 +40,7 @@ class AufgabenController extends Controller
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'toggle-erledigt' => ['POST'],
                     ],
                 ],
             ]
@@ -130,6 +131,19 @@ class AufgabenController extends Controller
 
         return ArrayHelper::map($lehrer, 'L_ID', function($l) {
             return $l->Vorname . ' ' . $l->Nachname;});
+    }
+
+    public function actionToggleErledigt($id)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $model = $this->findModel($id);
+        $model->Erledigt = $model->Erledigt ? 0 : 1;
+        
+        if ($model->save()) {
+            return ['success' => true, 'erledigt' => (bool)$model->Erledigt];
+        } else {
+            return ['success' => false, 'errors' => $model->errors];
+        }
     }
 
     public function actionUpdate($Aufgaben_ID)
