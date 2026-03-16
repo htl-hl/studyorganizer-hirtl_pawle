@@ -133,13 +133,20 @@ class AufgabenController extends Controller
             return $l->Vorname . ' ' . $l->Nachname;});
     }
 
-    public function actionToggleErledigt($id)
+    public function actionToggleErledigt()
     {
         Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $id = Yii::$app->request->post('id');
+        
+        if (!$id) {
+             return ['success' => false, 'message' => 'ID fehlt'];
+        }
+
         $model = $this->findModel($id);
         $model->Erledigt = $model->Erledigt ? 0 : 1;
         
-        if ($model->save()) {
+        if ($model->save(false)) {
             return ['success' => true, 'erledigt' => (bool)$model->Erledigt];
         } else {
             return ['success' => false, 'errors' => $model->errors];

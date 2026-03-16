@@ -28,7 +28,6 @@ main > .container {
     height: 100%; /* Ensure cards fill height */
     display: flex;
     flex-direction: column;
-    cursor: pointer; /* Add pointer cursor to indicate clickability */
 }
 
 .site-index .card:hover {
@@ -55,9 +54,6 @@ main > .container {
     text-decoration: none;
     color: inherit;
     transition: color 0.2s;
-    cursor: pointer; /* Ensure link cursor is shown */
-    position: relative; /* Needed to be clickable above the card's click handler */
-    z-index: 2;
 }
 
 .site-index .card-title a:hover {
@@ -87,6 +83,7 @@ main > .container {
     align-items: center;
     justify-content: center;
     border: 2px dashed #dee2e6 !important;
+    cursor: pointer;
 }
 
 .add-card:hover {
@@ -104,7 +101,7 @@ main > .container {
     transform: scale(1.1);
 }
 
-/* --- Status Colors (Example based on assumed classes) --- */
+/* --- Status Colors --- */
 .card.border-danger {
     border-left: 5px solid #dc3545 !important;
 }
@@ -117,6 +114,11 @@ main > .container {
     border-left: 5px solid #198754 !important;
 }
 
+.card.border-primary {
+    border-left: 5px solid #0d6efd !important;
+}
+
+
 /* --- Task Done State --- */
 .card.task-done {
     opacity: 0.6;
@@ -128,7 +130,6 @@ main > .container {
 .card.task-done:hover {
     transform: none; /* Disable lift effect */
     box-shadow: none;
-    cursor: default;
 }
 
 .card.task-done .card-title,

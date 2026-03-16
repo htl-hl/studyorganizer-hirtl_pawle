@@ -35,45 +35,9 @@ usort($aufgaben, function($a, $b) {
         </div>
 
         <?php foreach ($aufgaben as $aufgabe): ?>
-            <div class="col aufgaben-card-col" id="aufgabe-<?= $aufgabe->Aufgaben_ID ?>" data-erledigt="<?= $aufgabe->Erledigt ?>">
-                <!-- Added 'clickable-card' class and data attribute for ID -->
-                <div class="card h-100 shadow-sm border-0 clickable-card <?= \app\models\Aufgaben::getTaskDueDateClass($aufgabe) ?> <?= $aufgabe->Erledigt ? 'task-done' : '' ?>" data-id="<?= $aufgabe->Aufgaben_ID ?>" style="cursor: pointer;">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-light text-dark border"><?= Html::encode($aufgabe->F_Name) ?></span>
-                            <?php if ($aufgabe->Erledigt): ?>
-                                <span class="badge bg-success status-badge">Erledigt</span>
-                            <?php else: ?>
-                                <span class="badge bg-warning text-dark status-badge">Offen</span>
-                            <?php endif; ?>
-                        </div>
-                        
-                        <h5 class="card-title text-truncate" style="z-index: 10; position: relative;">
-                            <?= Html::a(
-                                    $aufgabe->Titel,
-                                    ['aufgaben/view', 'Aufgaben_ID' => $aufgabe->Aufgaben_ID],
-                                    ['class' => 'text-dark text-decoration-none task-link'] // Removed stretched-link
-                            ) ?>
-                        </h5>
-                        
-                        <p class="card-text text-muted small mb-3">
-                            <?= \yii\helpers\StringHelper::truncate(Html::encode($aufgabe->Beschreibung), 100) ?>
-                        </p>
-                        
-                        <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                            <small class="text-muted">
-                                <i class="bi bi-calendar-event me-1"></i>
-                                Fällig: <?= Yii::$app->formatter->asDate($aufgabe->Faelligkeitsdatum, 'php:d.m.Y') ?>
-                            </small>
-                            
-                            <div class="form-check form-switch" style="pointer-events: none;"> <!-- Disable pointer events on switch so card click handles it -->
-                                <input class="form-check-input task-erledigt-checkbox" type="checkbox" role="switch" id="erledigt-<?= $aufgabe->Aufgaben_ID ?>" <?= $aufgabe->Erledigt ? 'checked' : '' ?>>
-                                <label class="form-check-label" for="erledigt-<?= $aufgabe->Aufgaben_ID ?>">Erledigt</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <?= $this->render('../aufgaben/aufgaben',
+                    ['aufgabe' => $aufgabe,
+                            ]) ?>
         <?php endforeach; ?>
     </div>
 </div>
@@ -95,11 +59,27 @@ $(document).on('click', '.clickable-card', function(e) {
     var checkbox = card.find('.task-erledigt-checkbox');
     var isChecked = !checkbox.is(':checked'); // Toggle logic: current state is checkbox state, new state is opposite
     
-    // Optimistic UI update
-    checkbox.prop('checked', isChecked);
-    
     var cardCol = $('#aufgabe-' + aufgabenId);
     var aufgabenContainer = $('#aufgaben-container');
+    var badge = card.find('.status-badge');
+
+    // Optimistic UI update: Apply changes immediately
+    checkbox.prop('checked', isChecked);
+    
+    if (isChecked) {
+        card.addClass('task-done');
+        cardCol.attr('data-erledigt', '1');
+        // Update badge
+        badge.removeClass('bg-warning text-dark').addClass('bg-success').text('Erledigt');
+    } else {
+        card.removeClass('task-done');
+        cardCol.attr('data-erledigt', '0');
+        // Update badge
+        badge.removeClass('bg-success').addClass('bg-warning text-dark').text('Offen');
+    }
+    
+    // Sort visually immediately
+    sortCards();
 
     var postData = {
         id: aufgabenId
@@ -111,44 +91,32 @@ $(document).on('click', '.clickable-card', function(e) {
         type: 'POST',
         data: postData,
         success: function(response) {
-            if (response.success) {
-                if (isChecked) {
-                    card.addClass('task-done');
-                    cardCol.attr('data-erledigt', '1');
-                    // Move to bottom
-                    aufgabenContainer.append(cardCol);
-                } else {
-                    card.removeClass('task-done');
-                    cardCol.attr('data-erledigt', '0');
-                    // Move back up
-                    var firstDoneCard = aufgabenContainer.find('.aufgaben-card-col[data-erledigt="1"]').first();
-                    if (firstDoneCard.length) {
-                        cardCol.insertBefore(firstDoneCard);
-                    } else {
-                        aufgabenContainer.find('.col').last().before(cardCol);
-                    }
-                }
-                // Update badge text
-                var badge = card.find('.status-badge');
-                if (isChecked) {
-                    badge.removeClass('bg-warning text-dark').addClass('bg-success').text('Erledigt');
-                } else {
-                    badge.removeClass('bg-success').addClass('bg-warning text-dark').text('Offen');
-                }
-                
-                // Re-sort all cards visually
-                sortCards();
-
-            } else {
+            if (!response.success) {
+                // Revert changes on error
                 alert('Fehler beim Aktualisieren: ' + (response.errors ? JSON.stringify(response.errors) : 'Unbekannter Fehler'));
-                checkbox.prop('checked', !isChecked); // Revert checkbox state on error
+                revertChanges();
             }
         },
-        error: function() {
-            alert('Serverfehler beim Aktualisieren.');
-            checkbox.prop('checked', !isChecked); // Revert checkbox state on error
+        error: function(xhr, status, error) {
+            // Revert changes on error
+            alert('Serverfehler beim Aktualisieren: ' + error);
+            revertChanges();
         }
     });
+    
+    function revertChanges() {
+        checkbox.prop('checked', !isChecked);
+        if (!isChecked) { // Reverting from checked to unchecked (was originally unchecked)
+             card.removeClass('task-done');
+             cardCol.attr('data-erledigt', '0');
+             badge.removeClass('bg-success').addClass('bg-warning text-dark').text('Offen');
+        } else { // Reverting from unchecked to checked (was originally checked)
+             card.addClass('task-done');
+             cardCol.attr('data-erledigt', '1');
+             badge.removeClass('bg-warning text-dark').addClass('bg-success').text('Erledigt');
+        }
+        sortCards();
+    }
 });
 
 function sortCards() {
