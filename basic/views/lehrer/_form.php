@@ -6,6 +6,8 @@ use yii\widgets\ActiveForm;
 /** @var yii\web\View $this */
 /** @var app\models\Lehrer $model */
 /** @var yii\widgets\ActiveForm $form */
+/** @var array $faecherList */
+/** @var array $selectedFaecher */
 ?>
 
 <div class="lehrer-form">
@@ -19,6 +21,14 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'Kuerzel')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'Aktiv')->checkbox() ?>
+
+    <?= HTML::label('Fächer', 'faecher-select', ['class' => 'control-label']) ?>
+    <?= HTML::listBox('selectedFaecher', $selectedFaecher, $faecherList, [
+            'id' => 'selectdFaecher',
+        'class' => 'form-control',
+        'multiple' => true,
+        'size' => 6,
+    ]) ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>

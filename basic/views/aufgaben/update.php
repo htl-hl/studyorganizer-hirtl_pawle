@@ -15,6 +15,8 @@ $this->title = Yii::t('app', 'Bearbeite Aufgabe: {name}', [
 
     <?= $this->render('_form', [
         'model' => $model,
+        'faecherList' => $faecherList,
+        'lehrerList' => $lehrerList,
     ]) ?>
 
 </div>
