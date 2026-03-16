@@ -1,0 +1,208 @@
+<?php
+
+namespace app\controllers;
+
+use Yii;
+use app\models\Aufgaben;
+use app\models\AufgabenSearch;
+use app\models\Faecher;
+use app\models\Lehrer;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\filters\VerbFilter;
+use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
+
+/**
+ * AufgabenController implements the CRUD actions for Aufgaben model.
+ */
+class AufgabenController extends Controller
+{
+    /**
+     * @inheritDoc
+     */
+    public function behaviors()
+    {
+        return array_merge(
+            parent::behaviors(),
+            [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['create', 'update', 'delete', 'toggle-erledigt'], // Nur eingeloggte User dürfen diese Aktionen ausführen
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // '@' steht für eingeloggte User
+                        ],
+                    ],
+                ],
+                'verbs' => [
+                    'class' => VerbFilter::className(),
+                    'actions' => [
+                        'delete' => ['POST'],
+                        'toggle-erledigt' => ['POST'],
+                    ],
+                ],
+            ]
+        );
+    }
+
+    /**
+     * Lists all Aufgaben models.
+     *
+     * @return string
+     */
+    public function actionIndex()
+    {
+        $searchModel = new AufgabenSearch();
+        $dataProvider = $searchModel->search($this->request->queryParams);
+
+        return $this->render('index', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+    /**
+     * Displays a single Aufgaben model.
+     * @param int $Aufgaben_ID Aufgaben ID
+     * @return string
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionView($Aufgaben_ID)
+    {
+        return $this->render('view', [
+            'model' => $this->findModel($Aufgaben_ID),
+        ]);
+    }
+
+    /**
+     * Creates a new Aufgaben model.
+     * If creation is successful, the browser will be redirected to the 'view' page.
+     * @return string|\yii\web\Response
+     */
+    public function actionCreate()
+    {
+        $model = new Aufgaben();
+
+        $faecherList = ArrayHelper::map(
+            Faecher::find()->all(),
+            'F_Name',
+            'F_Name',
+        );
+
+        $lehrerList = [];
+
+        if ($this->request->isPost) {
+            if ($model->load($this->request->post())) {
+                $model->U_ID = Yii::$app->user->id; // User ID setzen
+                if ($model->save()) {
+                    return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
+                }
+            }
+        } else {
+            $model->loadDefaultValues();
+        }
+
+        return $this->render('create', [
+            'model' => $model,
+            'faecherList' => $faecherList,
+            'lehrerList' => $lehrerList,
+        ]);
+    }
+
+    /**
+     * Updates an existing Aufgaben model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param int $Aufgaben_ID Aufgaben ID
+     * @return array
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+
+    public function actionGetLehrerByFach($fach)
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $lehrer = Lehrer::find()
+            ->joinWith('lehrerHatFach')
+            ->where(['LHF_F_Name' => $fach])
+            //->andWhere(['Aktiv' => 1])
+            ->all();
+
+        return ArrayHelper::map($lehrer, 'L_ID', function($l) {
+            return $l->Vorname . ' ' . $l->Nachname;});
+    }
+
+    public function actionToggleErledigt()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $id = Yii::$app->request->post('id');
+        
+        if (!$id) {
+             return ['success' => false, 'message' => 'ID fehlt'];
+        }
+
+        $model = $this->findModel($id);
+        $model->Erledigt = $model->Erledigt ? 0 : 1;
+        
+        if ($model->save(false)) {
+            return ['success' => true, 'erledigt' => (bool)$model->Erledigt];
+        } else {
+            return ['success' => false, 'errors' => $model->errors];
+        }
+    }
+
+    public function actionUpdate($Aufgaben_ID)
+    {
+        $model = $this->findModel($Aufgaben_ID);
+
+        $faecherList = ArrayHelper::map(
+            Faecher::find()->all(),
+            'F_Name',
+            'F_Name',
+        );
+
+        $lehrerList = [];
+
+        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
+        }
+
+        return $this->render('update', [
+            'model' => $model,
+            'faecherList' => $faecherList,
+            'lehrerList' => $lehrerList,
+        ]);
+    }
+
+    /**
+     * Deletes an existing Aufgaben model.
+     * If deletion is successful, the browser will be redirected to the 'index' page.
+     * @param int $Aufgaben_ID Aufgaben ID
+     * @return \yii\web\Response
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionDelete($Aufgaben_ID)
+    {
+        $this->findModel($Aufgaben_ID)->delete();
+
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Finds the Aufgaben model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $Aufgaben_ID Aufgaben ID
+     * @return Aufgaben the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($Aufgaben_ID)
+    {
+        if (($model = Aufgaben::findOne(['Aufgaben_ID' => $Aufgaben_ID])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+}
