@@ -78,7 +78,7 @@ class Aufgaben extends \yii\db\ActiveRecord
             'Beschreibung' => Yii::t('app', 'Beschreibung'),
             'Faelligkeitsdatum' => Yii::t('app', 'Fälligkeitsdatum'),
             'Erledigt' => Yii::t('app', 'Erledigt'),
-            'L_ID' => Yii::t('app', 'L ID'),
+            'L_ID' => Yii::t('app', 'Lehrername'),
             'F_Name' => Yii::t('app', 'Fächername'),
             'U_ID' => Yii::t('app', 'U ID'),
         ];

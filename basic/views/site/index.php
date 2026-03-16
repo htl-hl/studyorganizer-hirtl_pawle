@@ -41,7 +41,14 @@ $this->title = 'Homepage';
                             <br>
                             <strong>Fällig am:</strong> <?= Html::encode($aufgabe->Faelligkeitsdatum)?>
                         </p>
+                        <div class="card-footer">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <label class="form-check-label" for="flexCheckDefault">
+                                Erledigt
+                            </label>
+                        </div>
                     </div>
+
 
                 </div>
             </div>

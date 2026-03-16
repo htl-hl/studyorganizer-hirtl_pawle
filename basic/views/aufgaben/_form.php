@@ -38,8 +38,6 @@ use yii\widgets\ActiveForm;
             ]
     ) ?>
 
-    <?= $form->field($model, 'U_ID')->textInput() ?>
-
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
@@ -71,7 +69,7 @@ $('#fach-dropdown').on('change', function() {
 });
 
 // Beim Bearbeiten: sofort Lehrer laden wenn Fach schon gesetzt
-if ($('#fach-dropdown').val()) {
+if ($$('#fach-dropdown').val()) {
     $('#fach-dropdown').trigger('change');
 }
 JS;

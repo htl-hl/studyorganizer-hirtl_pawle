@@ -42,6 +42,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             <?php ActiveForm::end(); ?>
 
+            <div>
+                <?= Html::a('Back to login', ['site/login']) ?>
+
+            </div>
+
         </div>
     </div>
 </div>

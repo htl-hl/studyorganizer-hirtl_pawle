@@ -7,11 +7,11 @@ use app\models\Aufgaben;
 use app\models\AufgabenSearch;
 use app\models\Faecher;
 use app\models\Lehrer;
-use PhpParser\Node\Expr\Array_;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 
 /**
  * AufgabenController implements the CRUD actions for Aufgaben model.
@@ -26,6 +26,16 @@ class AufgabenController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['create', 'update', 'delete'], // Nur eingeloggte User dürfen diese Aktionen ausführen
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // '@' steht für eingeloggte User
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
@@ -83,8 +93,11 @@ class AufgabenController extends Controller
         $lehrerList = [];
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
+            if ($model->load($this->request->post())) {
+                $model->U_ID = Yii::$app->user->id; // User ID setzen
+                if ($model->save()) {
+                    return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
+                }
             }
         } else {
             $model->loadDefaultValues();

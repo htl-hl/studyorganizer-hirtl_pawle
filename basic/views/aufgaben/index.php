@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /** @var app\models\AufgabenSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = Yii::t('app', 'Aufgabens');
+$this->title = Yii::t('app', 'Aufgaben');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="aufgaben-index">
@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a(Yii::t('app', 'Create Aufgaben'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Aufgabe erstellen'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
     <?php Pjax::begin(); ?>
@@ -28,15 +28,19 @@ $this->params['breadcrumbs'][] = $this->title;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
-
             'Aufgaben_ID',
             'F_Name',
             'Titel',
             'Beschreibung',
             'Faelligkeitsdatum',
-            'Erledigt',
+            [
+                'attribute' => 'Erledigt',
+                'value' => function ($model) {
+                    return $model->Erledigt ? 'Erledigt' : 'Offen';
+                },
+                'filter' => [0 => 'Offen', 1 => 'Erledigt'], // Fügt ein Filter-Dropdown hinzu
+            ],
             //'L_ID',
-
             //'U_ID',
             [
                 'class' => ActionColumn::className(),
