@@ -32,13 +32,16 @@ $this->params['breadcrumbs'][] = $this->title;
             'F_Name',
             'Titel',
             'Beschreibung',
-            'Faelligkeitsdatum',
+            [
+                'attribute' => 'Faelligkeitsdatum',
+                'format' => ['date', 'php:d.m.Y'],
+            ],
             [
                 'attribute' => 'Erledigt',
                 'value' => function ($model) {
                     return $model->Erledigt ? 'Erledigt' : 'Offen';
                 },
-                'filter' => [0 => 'Offen', 1 => 'Erledigt'], // Fügt ein Filter-Dropdown hinzu
+                'filter' => [0 => 'Offen', 1 => 'Erledigt'],
             ],
             //'L_ID',
             //'U_ID',
