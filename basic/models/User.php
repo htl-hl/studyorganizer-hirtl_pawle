@@ -4,6 +4,16 @@ namespace app\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * This is the model class for table "User".
+ *
+ * @property int $U_ID
+ * @property string $Username
+ * @property string $Password
+ * @property string $Role
+ * @property string $authKey
+ * @property string $accessToken
+ */
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
     public static function tableName()
@@ -14,8 +24,8 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function rules()
     {
         return [
-            [['Username'], 'required'],
-            [['Username'], 'string'],
+            [['Username', 'Password'], 'required'],
+            [['Username', 'Password', 'Role', 'authKey', 'accessToken'], 'string'],
         ];
     }
 
@@ -79,5 +89,21 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public function validatePassword($password)
     {
         return \Yii::$app->getSecurity()->validatePassword($password, $this->Password);
+    }
+    
+    /**
+     * Mapping for lowercase username property expected by Yii2
+     */
+    public function getUsername()
+    {
+        return $this->Username;
+    }
+
+    /**
+     * Mapping for lowercase username property expected by Yii2
+     */
+    public function setUsername($username)
+    {
+        $this->Username = $username;
     }
 }
