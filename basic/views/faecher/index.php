@@ -11,14 +11,17 @@ use yii\widgets\Pjax;
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
 $this->title = Yii::t('app', 'Fächer');
+$isAdmin = !Yii::$app->user->isGuest && Yii::$app->user->identity->Role == 'Admin';
 ?>
 <div class="faecher-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
+    <?php if ($isAdmin): ?>
     <p>
-        <?= Html::a(Yii::t('app', 'Create Fächer'), ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a(Yii::t('app', 'Fach erstellen'), ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+    <?php endif; ?>
 
     <?php Pjax::begin(); ?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -30,7 +33,8 @@ $this->title = Yii::t('app', 'Fächer');
 
             'F_Name',
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
+                'visible' => $isAdmin, // Spalte nur für Admins sichtbar
                 'urlCreator' => function ($action, Faecher $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'F_Name' => $model->F_Name]);
                  }

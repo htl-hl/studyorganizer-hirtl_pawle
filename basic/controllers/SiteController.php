@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Aufgaben;
 use app\models\Post;
+use app\models\RegisterForm;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -22,14 +23,20 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['login', 'register', 'error', 'captcha'],
                         'allow' => true,
-                        'roles' => ['@'],
+                        'roles' => ['?'], // Erlaubt Gästen (nicht angemeldeten Benutzern) den Zugriff
+                    ],
+                    [
+                        'allow' => true,
+                        'roles' => ['@'], // Erlaubt angemeldeten Benutzern den Zugriff auf alle anderen Aktionen
                     ],
                 ],
+                'denyCallback' => function ($rule, $action) {
+                    return $action->controller->redirect(['site/login']);
+                }
             ],
             'verbs' => [
                 'class' => VerbFilter::class,
@@ -86,7 +93,7 @@ class SiteController extends Controller
             return $this->goBack();
         }
 
-        $model->password = '';
+        $model->Password = ''; // Korrigiertes Attribut
         return $this->render('login', [
             'model' => $model,
         ]);
@@ -129,6 +136,20 @@ class SiteController extends Controller
      */
     public function actionAbout()
     {
-        return $this->render('about');
+        return $this->render('site/index');
+    }
+
+    public function actionRegister()
+    {
+        $model = new RegisterForm();
+        try {
+            if ($model->load(Yii::$app->request->post()) && $model->register()) {
+                return $this->redirect(['site/login']);
+            }
+        } catch (\Exception $e) {
+            $newMessage = explode('The SQL being executed was:', $e->getMessage())[0];
+            Yii::$app->session->setFlash('error', $newMessage);
+        }
+        return $this->render('register', ['regModel' => $model]);
     }
 }

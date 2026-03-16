@@ -71,8 +71,9 @@ class FaecherController extends Controller
     {
         $model = new Faecher();
         $lehrer = Lehrer::find()->all();
-        $dropdown = ArrayHelper::map($lehrer, 'L_ID', 'Kuerzel');
-
+        $dropdown = ArrayHelper::map($lehrer, 'L_ID', function($lehrer) {
+            return $lehrer->Vorname . ' ' . $lehrer->Nachname;
+        });
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -98,6 +99,10 @@ class FaecherController extends Controller
     public function actionUpdate($F_Name)
     {
         $model = $this->findModel($F_Name);
+        $lehrer = Lehrer::find()->all();
+        $dropdown = ArrayHelper::map($lehrer, 'L_ID', function($lehrer) {
+            return $lehrer->Vorname . ' ' . $lehrer->Nachname;
+        });
 
         if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
             return $this->redirect(['view', 'F_Name' => $model->F_Name]);
@@ -105,6 +110,7 @@ class FaecherController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'dropdown' => $dropdown,
         ]);
     }
 

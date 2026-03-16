@@ -7,11 +7,11 @@ use app\models\Aufgaben;
 use app\models\AufgabenSearch;
 use app\models\Faecher;
 use app\models\Lehrer;
-use PhpParser\Node\Expr\Array_;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\ArrayHelper;
+use yii\filters\AccessControl;
 
 /**
  * AufgabenController implements the CRUD actions for Aufgaben model.
@@ -26,10 +26,21 @@ class AufgabenController extends Controller
         return array_merge(
             parent::behaviors(),
             [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'only' => ['create', 'update', 'delete', 'toggle-erledigt'], // Nur eingeloggte User dürfen diese Aktionen ausführen
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'], // '@' steht für eingeloggte User
+                        ],
+                    ],
+                ],
                 'verbs' => [
                     'class' => VerbFilter::className(),
                     'actions' => [
                         'delete' => ['POST'],
+                        'toggle-erledigt' => ['POST'],
                     ],
                 ],
             ]
@@ -83,8 +94,11 @@ class AufgabenController extends Controller
         $lehrerList = [];
 
         if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
+            if ($model->load($this->request->post())) {
+                $model->U_ID = Yii::$app->user->id; // User ID setzen
+                if ($model->save()) {
+                    return $this->redirect(['view', 'Aufgaben_ID' => $model->Aufgaben_ID]);
+                }
             }
         } else {
             $model->loadDefaultValues();
@@ -117,6 +131,26 @@ class AufgabenController extends Controller
 
         return ArrayHelper::map($lehrer, 'L_ID', function($l) {
             return $l->Vorname . ' ' . $l->Nachname;});
+    }
+
+    public function actionToggleErledigt()
+    {
+        Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        
+        $id = Yii::$app->request->post('id');
+        
+        if (!$id) {
+             return ['success' => false, 'message' => 'ID fehlt'];
+        }
+
+        $model = $this->findModel($id);
+        $model->Erledigt = $model->Erledigt ? 0 : 1;
+        
+        if ($model->save(false)) {
+            return ['success' => true, 'erledigt' => (bool)$model->Erledigt];
+        } else {
+            return ['success' => false, 'errors' => $model->errors];
+        }
     }
 
     public function actionUpdate($Aufgaben_ID)

@@ -30,7 +30,7 @@ use yii\widgets\ActiveForm;
         'size' => 6,
     ]) ?>
 
-    <div class="form-group">
+    <div class="form-group mt-4">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 

@@ -6,16 +6,15 @@ use Yii;
 use yii\base\Model;
 
 /**
- * LoginForm is the model behind the login form.
+ * RegisterForm is the model behind the register form.
  *
  * @property-read User|null $user
  *
  */
-class LoginForm extends Model
+class RegisterForm extends Model
 {
     public $Username;
     public $Password;
-    public $rememberMe = true;
 
     private $_user = false;
 
@@ -57,12 +56,16 @@ class LoginForm extends Model
      * Logs in a user using the provided username and password.
      * @return bool whether the user is logged in successfully
      */
-    public function login()
+    public function register()
     {
-        if ($this->validate()) {
-            return Yii::$app->user->login($this->getUser(), $this->rememberMe ? 3600 * 24 * 30 : 0);
-        }
-        return false;
+
+        $user = new User();
+        $user->Username = $this->Username;
+        $user->Password = \Yii::$app->security->generatePasswordHash($this->Password);
+        $user->Role = 'User';
+        $user->save();
+
+        return true;
     }
 
     /**

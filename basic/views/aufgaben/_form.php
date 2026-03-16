@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'Titel')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'Beschreibung')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'Beschreibung')->textarea(['rows' => 6]) ?>
 
     <?= $form->field($model, 'F_Name')->dropDownList(
             $faecherList,
@@ -26,7 +26,7 @@ use yii\widgets\ActiveForm;
             ]
     ) ?>
 
-    <?= $form->field($model, 'Faelligkeitsdatum')->textInput() ?>
+    <?= $form->field($model, 'Faelligkeitsdatum')->input('date') ?>
 
     <?= $form->field($model, 'Erledigt')->checkbox() ?>
 
@@ -38,9 +38,7 @@ use yii\widgets\ActiveForm;
             ]
     ) ?>
 
-    <?= $form->field($model, 'U_ID')->textInput() ?>
-
-    <div class="form-group">
+    <div class="form-group mt-4">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
     </div>
 

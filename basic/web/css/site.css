@@ -1,88 +1,192 @@
+:root {
+    --primary-color: #0d6efd;
+    --secondary-color: #6c757d;
+    --background-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-color: #333333;
+    --border-radius: 12px;
+    --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --box-shadow-hover: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
 main > .container {
-    padding: 70px 15px 20px;
+    padding: 80px 15px 40px;
 }
 
-.footer {
-    background-color: #f5f5f5;
-    font-size: .9em;
-    height: 60px;
+/* --- Homepage Specific --- */
+.site-index .card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: var(--box-shadow);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    height: 100%; /* Ensure cards fill height */
+    display: flex;
+    flex-direction: column;
 }
 
-.footer > .container {
-    padding-right: 15px;
-    padding-left: 15px;
+.site-index .card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--box-shadow-hover);
 }
 
-.not-set {
-    color: #c55;
-    font-style: italic;
+.site-index .card-body {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
-/* add sorting icons to gridview sort links */
-a.asc:after, a.desc:after {
-    content: '';
-    left: 3px;
-    display: inline-block;
-    width: 0;
-    height: 0;
-    border: solid 5px transparent;
-    margin: 4px 4px 2px 4px;
-    background: transparent;
+.site-index .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    color: #212529;
 }
 
-a.asc:after {
-    border-bottom: solid 7px #212529;
-    border-top-width: 0;
+.site-index .card-title a {
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
 }
 
-a.desc:after {
-    border-top: solid 7px #212529;
-    border-bottom-width: 0;
+.site-index .card-title a:hover {
+    color: var(--primary-color);
+}
+
+.site-index .card-text {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    flex-grow: 1; /* Pushes footer down */
+}
+
+.site-index .card-footer {
+    background-color: transparent;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 1rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+}
+
+
+/* --- Add Button Card --- */
+.add-card {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #dee2e6 !important;
+    cursor: pointer;
+}
+
+.add-card:hover {
+    background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+    border-color: #adb5bd !important;
+}
+
+.add-card svg {
+    color: #adb5bd;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.add-card:hover svg {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+/* --- Status Colors --- */
+.card.border-danger {
+    border-left: 5px solid #dc3545 !important;
+}
+
+.card.border-warning {
+    border-left: 5px solid #ffc107 !important;
+}
+
+.card.border-success {
+    border-left: 5px solid #198754 !important;
+}
+
+.card.border-primary {
+    border-left: 5px solid #0d6efd !important;
+}
+
+
+/* --- Task Done State --- */
+.card.task-done {
+    opacity: 0.6;
+    background-color: #f8f9fa;
+    border-left-color: #ced4da !important; /* Override status color */
+    box-shadow: none;
+}
+
+.card.task-done:hover {
+    transform: none; /* Disable lift effect */
+    box-shadow: none;
+}
+
+.card.task-done .card-title,
+.card.task-done .card-text {
+    text-decoration: line-through;
+    color: #adb5bd;
+}
+
+/* --- GridView Improvements --- */
+.grid-view .table {
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
 }
 
 .grid-view th {
-    white-space: nowrap;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #e9ecef;
+    color: #495057;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 16px;
 }
 
-.hint-block {
-    display: block;
-    margin-top: 5px;
-    color: #999;
+.grid-view td {
+    padding: 16px;
+    vertical-align: middle;
+    border-top: 1px solid #f1f3f5;
 }
 
-.error-summary {
-    color: #a94442;
-    background: #fdf7f7;
-    border-left: 3px solid #eed3d7;
+
+/* --- Buttons --- */
+.btn {
+    border-radius: 8px;
     padding: 10px 20px;
-    margin: 0 0 15px 0;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.2s;
 }
 
-/* align the logout "link" (button in form) of the navbar */
-.nav li > form > button.logout {
-    padding-top: 7px;
-    color: rgba(255, 255, 255, 0.5);
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-@media(max-width:767px) {
-    .nav li > form > button.logout {
-        display:block;
-        text-align: left;
-        width: 100%;
-        padding: 10px 0;
-    }
+
+/* --- Navbar --- */
+.navbar {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    backdrop-filter: blur(10px);
+    background-color: rgba(33, 37, 41, 0.95) !important;
 }
 
-.nav > li > form > button.logout:focus,
-.nav > li > form > button.logout:hover {
-    text-decoration: none;
-    color: rgba(255, 255, 255, 0.75);
-}
-
-.nav > li > form > button.logout:focus {
-    outline: none;
-}
-
-.form-group {
-    margin-bottom: 1rem;
+.footer {
+    background-color: #fff;
+    border-top: 1px solid #e9ecef;
 }
